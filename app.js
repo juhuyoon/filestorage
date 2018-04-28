@@ -44,6 +44,7 @@ const storage = new GridFsStorage({
           filename: filename,
           bucketName: 'uploads'
         };
+        
         resolve(fileInfo);
       });
     });
@@ -77,8 +78,8 @@ app.get('/', (req, res) => {
 // @route POST /upload
 // @desc  Uploads file to DB
 app.post('/upload', upload.single('file'), (req, res) => {
-  // res.json({ file: req.file });
-  res.redirect('/');
+   res.json({ file: req.file });
+  //res.redirect('/');
 });
 
 // @route GET /files
@@ -127,7 +128,7 @@ app.get('/image/:filename', (req, res) => {
     if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
       // Read output to browser
       const readstream = gfs.createReadStream(file.filename);
-      readstream.pipe(res);
+      readstream.pipe(res); 
     } else {
       res.status(404).json({
         err: 'Not an image'
@@ -135,6 +136,19 @@ app.get('/image/:filename', (req, res) => {
     }
   });
 });
+
+    // Check if image
+    if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+      // Read output to browser
+      const readstream = gfs.createReadStream(content_id = "1");
+      readstream.pipe(res); 
+    } else {
+      res.status(404).json({
+        err: 'Not an image'
+      });
+    }
+  }
+  });
 
 // @route DELETE /files/:id
 // @desc  Delete file
@@ -148,6 +162,6 @@ app.delete('/files/:id', (req, res) => {
   });
 });
 
-const port = 5000;
+const port = 3000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
